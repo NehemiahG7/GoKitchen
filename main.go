@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
+var inv = make([][]string, 5)
+
 func getInv() {
+	fmt.Println("It looks like you haven't used kitchen manager before. Lets take your inventory:")
 	scanner := bufio.NewScanner(os.Stdin)
-	inv, err := os.Create("inv.csv")
+	fInv, err := os.Create("fInv.csv")
 	if err != nil {
 		log.Fatalf("File failed to create %s", err)
 	}
@@ -34,22 +38,47 @@ func getInv() {
 		input += group + "," + scanner.Text() + "\n"
 	}
 	fmt.Println(input)
-	num, err := inv.WriteString(input)
+	num, err := fInv.WriteString(input)
 	if err != nil {
 		fmt.Println(err, num)
 	}
-	inv.Close()
+	fInv.Close()
+}
+func loadInv() {
+	fInv, err := os.Open("fInv.csv")
+	if err != nil {
+		log.Fatalf("Failed to open file %s", err)
+	}
+	reader := bufio.NewScanner(fInv)
+
+	for i := 0; reader.Scan(); i++ {
+		str := reader.Text()
+		arry := strings.Split(str, ",")
+		inv[i] = arry
+	}
+	fInv.Close()
+}
+func printInv() {
+	fmt.Println("Here is what you have in you kitchen:")
+	for i := 0; i < len(inv); i++ {
+		fmt.Printf("%s:\n\t", inv[i][0])
+		for k := 1; k < len(inv[i]); k++ {
+			fmt.Printf("%s, ", inv[i][k])
+		}
+		fmt.Printf("\n\n")
+	}
 }
 
 func main() {
 	//scanner := bufio.NewScanner(os.Stdin)
-	inv, err := os.Open("inv.csv")
+	fInv, err := os.Open("fInv.csv")
 
 	if err != nil {
-		//Initialize .csv if inv has not been taken before
-		fmt.Println("It looks like you haven't used kitchen manager before. Lets take your inv:")
+		//Initialize .csv if fInv has not been taken before
 		getInv()
 	}
-	inv.Close()
+	fInv.Close()
+	loadInv()
+	printInv()
 
 }
