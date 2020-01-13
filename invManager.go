@@ -13,7 +13,7 @@ type InvMethods interface {
 	printInv()
 }
 type Inventory struct {
-	Inven []FoodGroup `json:"Inventory"`
+	Inven map[string]*[]Item `json:"Inventory"`
 }
 type FoodGroup struct {
 	Group string `json:"FoodGroup"`
@@ -56,7 +56,7 @@ func getInv() {
 		log.Fatalf("File failed to create %s", err)
 	}
 
-	str := Inventory{Inven: make([]FoodGroup, 5)}
+	str := Inventory{Inven: make(map[string]*[]Item)}
 
 	//Get inventory from user
 	var group string
@@ -81,16 +81,16 @@ func getInv() {
 		//Split input into array
 		itmArray := strings.Split(scanner.Text(), ",")
 
-		//Make struct for food group
-		fdGroup := FoodGroup{Group: group, Items: make([]Item, len(itmArray))}
+		//Make array to group items together
+		arry := make([]Item, len(itmArray))
 
 		//make structs for each item
 		for k := 0; k < len(itmArray); k++ {
-			fdGroup.Items[k] = Item{Name: itmArray[k], DateEntered: "p", ForceList: false}
+			arry[k] = Item{Name: itmArray[k], DateEntered: "p", ForceList: false}
 		}
 
 		//add group to inventory
-		str.Inven[i] = fdGroup
+		str.Inven[group] = &arry
 	}
 
 	fmt.Println(str)
