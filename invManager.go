@@ -15,11 +15,6 @@ type InvMethods interface {
 type Inventory struct {
 	Inven map[string]*[]Item `json:"Inventory"`
 }
-type FoodGroup struct {
-	Group string `json:"FoodGroup"`
-	Items []Item `json:"items"`
-}
-
 type Item struct {
 	Name        string `json:"name"`
 	ForceList   bool   `json:"forceList"`
