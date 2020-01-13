@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -13,13 +14,8 @@ type InvMethods interface {
 	printInv()
 }
 type Inventory struct {
-	Inven []FoodGroup `json:"Inventory"`
+	Inven map[string]*[]Item `json:"Inventory"`
 }
-type FoodGroup struct {
-	Group string `json:"FoodGroup"`
-	Items []Item `json:"items"`
-}
-
 type Item struct {
 	Name        string `json:"name"`
 	ForceList   bool   `json:"forceList"`
@@ -48,19 +44,35 @@ func printInv() {
 	}
 }
 
+func encodeInv(inv Inventory) {
+	fInv := openFile()
+
+	encodeInv, _ := json.MarshalIndent(inv, "", "  ")
+	fmt.Println(encodeInv)
+	//export
+	num, err := fInv.Write(encodeInv)
+	if err != nil {
+		fmt.Println(err, num)
+		//get
+	}
+	fInv.Close()
+}
+
 func getInv() {
 	fmt.Println("It looks like you haven't used kitchen manager before. Lets take your inventory:")
 	scanner := bufio.NewScanner(os.Stdin)
+
+	//Make file for later use
 	fInv, err := os.Create("fInv.json")
 	if err != nil {
 		log.Fatalf("File failed to create %s", err)
 	}
+	fInv.Close()
 
-	str := Inventory{Inven: make([]FoodGroup, 5)}
+	str := Inventory{Inven: make(map[string]*[]Item)}
 
 	//Get inventory from user
 	var group string
-	var input string
 	for i := 0; i < 5; i++ {
 		//Cycle through catagories
 		switch i {
@@ -81,25 +93,19 @@ func getInv() {
 		//Split input into array
 		itmArray := strings.Split(scanner.Text(), ",")
 
-		//Make struct for food group
-		fdGroup := FoodGroup{Group: group, Items: make([]Item, len(itmArray))}
+		//Make array to group items together
+		arry := make([]Item, len(itmArray))
 
 		//make structs for each item
 		for k := 0; k < len(itmArray); k++ {
-			fdGroup.Items[k] = Item{Name: itmArray[k], DateEntered: "p", ForceList: false}
+			arry[k] = Item{Name: itmArray[k], DateEntered: "p", ForceList: false}
 		}
 
 		//add group to inventory
-		str.Inven[i] = fdGroup
+		str.Inven[group] = &arry
 	}
 
 	fmt.Println(str)
 
-	//export
-	num, err := fInv.WriteString(input)
-	if err != nil {
-		fmt.Println(err, num)
-		//get
-	}
-	fInv.Close()
+	encodeInv(str)
 }

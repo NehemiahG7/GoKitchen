@@ -6,7 +6,7 @@ import (
 )
 
 func openFile() *os.File {
-	fInv, err := os.Open("fInv.csv")
+	fInv, err := os.Open("fInv.json")
 	if err != nil {
 		log.Fatalf("File failed to open; %s", err)
 	}
