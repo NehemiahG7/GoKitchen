@@ -16,6 +16,6 @@ func main() {
 	}
 	fInv.Close()
 	loadInv()
-	printInv()
+	//printInv()
 
 }
