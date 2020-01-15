@@ -2,8 +2,10 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -22,16 +24,16 @@ type Item struct {
 	DateEntered string `json:"dateEntered"`
 }
 
-func loadInv() {
-	fInv := openFile()
-	reader := bufio.NewScanner(fInv)
+func loadInv() *Inventory {
+	fInv := openFile("fInv.json")
+	defer fInv.Close()
+	dec := json.NewDecoder(fInv)
 
-	//.Scan() through lines of fInv.csv
-	for i := 0; reader.Scan(); i++ {
-		//Add all lines to the inv array
-		inv[i] = strings.Split(reader.Text(), ",")
-	}
-	fInv.Close()
+	invMap := Inventory{}
+	dec.Decode(&invMap)
+	fmt.Println(invMap)
+
+	return &invMap
 }
 func printInv() {
 	fmt.Println("Here is what you have in you kitchen:")
@@ -45,29 +47,28 @@ func printInv() {
 }
 
 func encodeInv(inv Inventory) {
-	fInv := openFile()
 
-	encodeInv, _ := json.MarshalIndent(inv, "", "  ")
-	fmt.Println(encodeInv)
-	//export
-	num, err := fInv.Write(encodeInv)
+	fInv, err := os.Create("fInv.json")
 	if err != nil {
-		fmt.Println(err, num)
-		//get
+		log.Fatalf("File failed to create %s", err)
 	}
+
+	var buf = new(bytes.Buffer)
+
+	enc := json.NewEncoder(buf)
+	enc.Encode(inv)
+
+	_, err = io.Copy(fInv, buf)
+	if err != nil {
+		fmt.Printf("Fuck: %s", err)
+	}
+
 	fInv.Close()
 }
 
 func getInv() {
 	fmt.Println("It looks like you haven't used kitchen manager before. Lets take your inventory:")
 	scanner := bufio.NewScanner(os.Stdin)
-
-	//Make file for later use
-	fInv, err := os.Create("fInv.json")
-	if err != nil {
-		log.Fatalf("File failed to create %s", err)
-	}
-	fInv.Close()
 
 	str := Inventory{Inven: make(map[string]*[]Item)}
 
@@ -105,7 +106,7 @@ func getInv() {
 		str.Inven[group] = &arry
 	}
 
-	fmt.Println(str)
+	//fmt.Println(str)
 
 	encodeInv(str)
 }
