@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -13,12 +12,15 @@ func main() {
 
 	if err != nil {
 		//Initialize .json if fInv has not been taken before
-		createInv()
+		create()
 	}
 	fInv.Close()
 
-	inv := loadInv()
-	//inv.printInv()
-	fmt.Println(inv.checkInv("Chicken"))
+	inv := load()
+
+	inv.editName("Beef", "Lamb")
+	inv.editDate("Lamb", "Today")
+	inv.editList("Lamb", true)
+	inv.printInv()
 
 }
