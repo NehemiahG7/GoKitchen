@@ -5,6 +5,10 @@ import (
 	"os"
 )
 
+func init() {
+
+}
+
 func openFile(str string) *os.File {
 	fInv, err := os.Open(str)
 	if err != nil {

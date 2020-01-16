@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -11,11 +12,13 @@ func main() {
 	fInv, err := os.Open("fInv.json")
 
 	if err != nil {
-		//Initialize .csv if fInv has not been taken before
-		getInv()
+		//Initialize .json if fInv has not been taken before
+		createInv()
 	}
 	fInv.Close()
-	loadInv()
-	//printInv()
+
+	inv := loadInv()
+	//inv.printInv()
+	fmt.Println(inv.checkInv("Chicken"))
 
 }
