@@ -1,26 +1,19 @@
 package main
 
-import (
-	"os"
-)
-
-var inv = make([][]string, 5)
-
 func main() {
-	//scanner := bufio.NewScanner(os.Stdin)
-	fInv, err := os.Open("fInv.json")
 
-	if err != nil {
-		//Initialize .json if fInv has not been taken before
-		create()
-	}
-	fInv.Close()
+	inv := loadInv()
 
-	inv := load()
+	inv.editList("carrots", true)
+	inv.editList("onions", true)
+	inv.editList("green beans", true)
+	inv.editList("milk", true)
+	inv.editList("cream", true)
 
-	inv.editName("Beef", "Lamb")
-	inv.editDate("Lamb", "Today")
-	inv.editList("Lamb", true)
+	groc := createList(*inv)
+
 	inv.printInv()
+
+	groc.Print()
 
 }

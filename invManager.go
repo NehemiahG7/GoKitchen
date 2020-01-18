@@ -2,10 +2,8 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"strings"
@@ -93,8 +91,8 @@ func (inv Inventory) add(key string, name string) {
 	inv.Inven[key] = append(inv.Inven[key], item)
 }
 
-// deleteItem() takes the name of an Item and deletes it if it is in the Inventory
-func (inv Inventory) deleteItem(name string) {
+// remove() takes the name of an Item and deletes it if it is in the Inventory
+func (inv Inventory) remove(name string) {
 	key, index := inv.find(name)
 	if key == "" {
 		return
@@ -133,10 +131,14 @@ func (inv Inventory) editList(name string, edit bool) {
 }
 
 // load() loads an Inventory struct from the given .json file
-func load() *Inventory {
-	fInv := openFile("fInv.json")
-	defer fInv.Close()
-	dec := json.NewDecoder(fInv)
+func loadInv() *Inventory {
+	file, err := os.Open(InvFile)
+	if err != nil {
+		//Initialize .json if fInv has not been taken before
+		return createInv()
+	}
+	defer file.Close()
+	dec := json.NewDecoder(file)
 
 	invMap := Inventory{}
 	dec.Decode(&invMap)
@@ -145,28 +147,28 @@ func load() *Inventory {
 }
 
 // encodeInv() takes an Inventory struct, encodes it to json, and writes it to a .json file
-func encodeInv(inv Inventory) {
+// func encodeInv(inv Inventory) {
 
-	fInv, err := os.Create("fInv.json")
-	if err != nil {
-		log.Fatalf("File failed to create %s", err)
-	}
+// 	fInv, err := os.Create(InvFile)
+// 	if err != nil {
+// 		log.Fatalf("File failed to create %s", err)
+// 	}
 
-	var buf = new(bytes.Buffer)
+// 	var buf = new(bytes.Buffer)
 
-	enc := json.NewEncoder(buf)
-	enc.Encode(inv)
+// 	enc := json.NewEncoder(buf)
+// 	enc.Encode(inv)
 
-	_, err = io.Copy(fInv, buf)
-	if err != nil {
-		fmt.Printf("%s", err)
-	}
+// 	_, err = io.Copy(fInv, buf)
+// 	if err != nil {
+// 		fmt.Printf("%s", err)
+// 	}
 
-	fInv.Close()
-}
+// 	fInv.Close()
+// }
 
 // create() creates a new Inventory struct from user input then calls encodeinv() to write it to a .json
-func create() {
+func createInv() *Inventory {
 	fmt.Println("It looks like you haven't used kitchen manager before. Lets take your inventory:")
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -207,5 +209,6 @@ func create() {
 		str.Inven[group] = arry
 	}
 
-	encodeInv(str)
+	encode(str, InvFile)
+	return &str
 }
