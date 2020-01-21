@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// GroceryList() is a struct containing a map which uses a string for key with a slice of strings for content
+// GroceryList is a struct containing a map which uses a string for key with a slice of strings for content
 type GroceryList struct {
 	GList []string `json:"GroceryList"`
 }
@@ -19,14 +19,18 @@ func (grocery GroceryList) String() string {
 	}
 	return b.String()
 }
+
+//Print prints the content of a grocery struct
 func (grocery GroceryList) Print() {
 	fmt.Print(grocery)
 }
 
+//Add appends an item to the grocery list
 func (grocery GroceryList) Add(item string) {
 	grocery.GList = append(grocery.GList, item)
 }
 
+//Remove removes an item from the grocery list
 func (grocery GroceryList) Remove(item string) {
 	index := grocery.find(item)
 	if index == -1 {

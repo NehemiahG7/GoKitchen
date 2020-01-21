@@ -44,7 +44,7 @@ func (inv Inventory) String() string {
 // printInv() prints Inventory
 func (inv Inventory) printInv() {
 	fmt.Println("Here is what you have in you kitchen:")
-	fmt.Println(inv)
+	fmt.Print(inv)
 }
 
 // check() takes the name of an item and returns true if it is in Inventory, and false if not
