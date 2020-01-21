@@ -7,10 +7,13 @@ import (
 	"os"
 )
 
+//Module is the command string for main.go
 var Module string
 
+//Inv is pointer to the currently loaded Inventory struct
 var Inv *Inventory
 
+//Groc is the currently loaded inventory struct
 var Groc GroceryList
 
 //CONFIGFILE is a config file

@@ -79,55 +79,94 @@ func (inv Inventory) find(name string) (string, int) {
 	return str, num
 }
 
-// add() Takes a food group and name of an item as strings and adds item to given food group with default values
-func (inv Inventory) add(key string, name string) {
+//Add Takes a food group and name of an item as strings and adds item to given food group with default values
+func (inv Inventory) Add(strs []string) {
 	date := time.Now().Format("Mon Jan 2")
+	key := strs[0]
 
-	item := Item{
-		Name:        name,
-		ForceList:   false,
-		DateEntered: date,
+	for i := 1; i < len(strs); i++ {
+		if inv.check(strs[i]) {
+			inv.updateDate(strs[i])
+		}
+		item := Item{
+			Name:        strs[i],
+			ForceList:   false,
+			DateEntered: date,
+		}
+		inv.Inven[key] = append(inv.Inven[key], item)
 	}
-	inv.Inven[key] = append(inv.Inven[key], item)
+
 }
 
-// remove() takes the name of an Item and deletes it if it is in the Inventory
-func (inv Inventory) remove(name string) {
-	key, index := inv.find(name)
-	if key == "" {
-		return
+//Remove takes the name of an Item and deletes it if it is in the Inventory
+func (inv Inventory) Remove(strs []string) {
+	for i := 0; i < len(strs); i++ {
+		key, index := inv.find(strs[i])
+		if key == "" {
+			continue
+		}
+		inv.Inven[key] = append(inv.Inven[key][:index], inv.Inven[key][index+1:]...)
 	}
-	inv.Inven[key] = append(inv.Inven[key][:index], inv.Inven[key][index+1:]...)
+	fmt.Printf("removed: %s\n", strs)
 }
 
-// editName() changes the name of name to edit
-func (inv Inventory) editName(name string, edit string) {
-	key, index := inv.find(name)
-	if key == "" {
-		log.Println("Cannot find item")
-		return
+//ChangeKey moves an item to a different key value
+func (inv Inventory) ChangeKey(arry []string) {
+	//A slice to hold all items moved for the remove function later
+	names := make([]string, 0)
+
+	for i := 0; i < len(arry)/2; i++ {
+		name := arry[i*2+1]
+		edit := arry[i*2]
+		//Find name in the Inventory, return "" if it does not currently exist
+		key, index := inv.find(name)
+		if key == "" {
+			log.Println("Cannot find item")
+			continue
+		}
+		//Since name exists, add it to the names array
+		names = append(names, name)
+		//Assign the item names refers to to a temperary variable
+		tempItem := inv.Inven[key][index]
+		Inv.Remove(names)
+		//Add the tempItem to the desired key
+		inv.Inven[edit] = append(inv.Inven[edit], tempItem)
 	}
-	inv.Inven[key][index].Name = edit
 }
 
 // editDate() changes the date of item to the edit
-func (inv Inventory) editDate(name string, edit string) {
+func (inv Inventory) updateDate(name string) {
 	key, index := inv.find(name)
+	date := time.Now().Format("Mon Jan 2")
 	if key == "" {
 		log.Println("Cannot find item")
 		return
 	}
-	inv.Inven[key][index].DateEntered = edit
+	inv.Inven[key][index].DateEntered = date
 }
 
-// editList() sets name's forceList to edit
-func (inv Inventory) editList(name string, edit bool) {
-	key, index := inv.find(name)
-	if key == "" {
-		log.Println("Cannot find item")
-		return
+//AddGrocery sets name's forceList to true
+func (inv Inventory) AddGrocery(strs []string) {
+	for i := 0; i < len(strs); i++ {
+		key, index := inv.find(strs[i])
+		if key == "" {
+			log.Println("Cannot find item")
+			return
+		}
+		inv.Inven[key][index].ForceList = true
 	}
-	inv.Inven[key][index].ForceList = edit
+}
+
+//RemoveGrocery sets name's forcelist to false
+func (inv Inventory) RemoveGrocery(strs []string) {
+	for i := 0; i < len(strs); i++ {
+		key, index := inv.find(strs[i])
+		if key == "" {
+			log.Println("Cannot find item")
+			return
+		}
+		inv.Inven[key][index].ForceList = false
+	}
 }
 
 // load() loads an Inventory struct from the given .json file
@@ -146,26 +185,10 @@ func loadInv() *Inventory {
 	return &invMap
 }
 
-// encodeInv() takes an Inventory struct, encodes it to json, and writes it to a .json file
-// func encodeInv(inv Inventory) {
-
-// 	fInv, err := os.Create(InvFile)
-// 	if err != nil {
-// 		log.Fatalf("File failed to create %s", err)
-// 	}
-
-// 	var buf = new(bytes.Buffer)
-
-// 	enc := json.NewEncoder(buf)
-// 	enc.Encode(inv)
-
-// 	_, err = io.Copy(fInv, buf)
-// 	if err != nil {
-// 		fmt.Printf("%s", err)
-// 	}
-
-// 	fInv.Close()
-// }
+//EncodeInv prints the struct to a .json file
+func (inv *Inventory) encodeInv() {
+	encode(inv, InvFile)
+}
 
 // create() creates a new Inventory struct from user input then calls encodeinv() to write it to a .json
 func createInv() *Inventory {
@@ -177,19 +200,21 @@ func createInv() *Inventory {
 	//Get inventory from user
 	var group string
 	date := time.Now().Format("Mon Jan 2")
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 		//Cycle through catagories
 		switch i {
 		case 0:
-			group = "Meats"
+			group = "meats"
 		case 1:
-			group = "Fruits"
+			group = "fruits"
 		case 2:
-			group = "Vegetables"
+			group = "vegetables"
 		case 3:
-			group = "Grains"
+			group = "grains"
 		case 4:
-			group = "Dairy"
+			group = "dairy"
+		case 5:
+			group = "other"
 		}
 		fmt.Printf("Enter any %s that you have. Seperate each by only a comma: ", group)
 		scanner.Scan()
@@ -208,7 +233,6 @@ func createInv() *Inventory {
 		//add group to inventory
 		str.Inven[group] = arry
 	}
-
-	encode(str, InvFile)
+	str.encodeInv()
 	return &str
 }
