@@ -14,7 +14,7 @@ var Module string
 var Inv *Inventory
 
 //Groc is the currently loaded inventory struct
-var Groc GroceryList
+var Groc *GroceryList
 
 //CONFIGFILE is a config file
 const CONFIGFILE string = "conf.json"

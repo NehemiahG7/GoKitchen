@@ -52,3 +52,9 @@ func checkGegex(str, rg string) bool {
 	}
 	return b
 }
+
+//Checkout encodes all currently open structs to their respective files
+func Checkout() {
+	Groc.encodeList()
+	Inv.encodeInv()
+}

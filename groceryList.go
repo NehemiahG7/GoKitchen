@@ -22,21 +22,25 @@ func (grocery GroceryList) String() string {
 
 //Print prints the content of a grocery struct
 func (grocery GroceryList) Print() {
-	fmt.Print(grocery)
+	fmt.Printf("\nYour grocery list:\n%s", grocery)
 }
 
 //Add appends an item to the grocery list
-func (grocery GroceryList) Add(item string) {
-	grocery.GList = append(grocery.GList, item)
+func (grocery GroceryList) Add(items []string) {
+	for i := 0; i < len(items); i++ {
+		grocery.GList = append(grocery.GList, items[i])
+	}
 }
 
 //Remove removes an item from the grocery list
-func (grocery GroceryList) Remove(item string) {
-	index := grocery.find(item)
-	if index == -1 {
-		return
+func (grocery GroceryList) Remove(items []string) {
+	for i := 0; i < len(items); i++ {
+		index := grocery.find(items[i])
+		if index == -1 {
+			return
+		}
+		grocery.GList = append(grocery.GList[:index], grocery.GList[index+1:]...)
 	}
-	grocery.GList = append(grocery.GList[:index], grocery.GList[index+1:]...)
 }
 
 func (grocery GroceryList) find(item string) int {
@@ -48,8 +52,8 @@ func (grocery GroceryList) find(item string) int {
 	return -1
 }
 
-func createList(inv Inventory) GroceryList {
-	var list = make([]string, 10)
+func createList(inv Inventory) *GroceryList {
+	var list = make([]string, 0)
 	for k := range inv.Inven {
 		for i := 0; i < len(inv.Inven[k]); i++ {
 			if inv.Inven[k][i].ForceList {
@@ -58,17 +62,17 @@ func createList(inv Inventory) GroceryList {
 		}
 	}
 	grocery := GroceryList{GList: list}
-	return grocery
+	return &grocery
 }
 
 func loadList() *GroceryList {
 	file, err := os.Open(GrocFile)
+	defer file.Close()
+
 	if err != nil {
 		//Initialize .json if fInv has not been taken before
-		//return createList()
-		fmt.Printf("Could not open file, %s", err)
+		return createList(*Inv)
 	}
-	defer file.Close()
 	dec := json.NewDecoder(file)
 
 	grocery := GroceryList{}
@@ -77,6 +81,6 @@ func loadList() *GroceryList {
 	return &grocery
 }
 
-func encodeList(grocery GroceryList) {
+func (grocery *GroceryList) encodeList() {
 	encode(grocery, GrocFile)
 }

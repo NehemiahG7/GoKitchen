@@ -10,20 +10,36 @@ var reg string = `/.*`
 func main() {
 
 	for {
-		switch Module {
-		case "inventory":
-			inventoryModule()
-		case "grocery":
-			groceryModule()
-		case "help":
-			fmt.Printf("Comands:\nprint: Prints current inventory\n")
-		case "q":
-			os.Exit(1)
-		default:
-			fmt.Print("Please enter a module to load (inventory, grocery, cookbook): ")
-		}
-		fmt.Scanln(&Module)
 
+		switch {
+		//Enter inventory module
+		case checkGegex(Module, `^\s*.?inventory\s*$`):
+			inventoryModule()
+
+		//Enter grocery module
+		case checkGegex(Module, `^\s*.?grocery\s*$`):
+			groceryModule()
+
+		//print all commands for main menu
+		case checkGegex(Module, `^\s*.?help\s*$`):
+			fmt.Printf("Comands:\nprint: Prints current inventory\n")
+
+		//quit out of program
+		case checkGegex(Module, `^\s*.?q\s*$`):
+			Checkout()
+			os.Exit(1)
+
+		//empty case to prevent default case from running when not using a flag
+		case checkGegex(Module, `^\s*.?empty\s*$`):
+
+		//inform of invalid command
+		default:
+			fmt.Printf("\nCommand, \"%s\" not found. Use, \"help\" for a list of commands\n", Module)
+		}
+
+		//Prompt for input
+		fmt.Print("Please enter a module to load (inventory, grocery, cookbook): ")
+		fmt.Scanln(&Module)
 	}
 
 }
@@ -133,14 +149,16 @@ func groceryModule() {
 		commands := Parse(Module)
 		for i := 0; i < len(commands); i++ {
 			switch {
-			case checkGegex(commands[i][0], `.*print`):
+			case checkGegex(commands[i][0], `^\s*.?print\s*$`):
 				Groc.Print()
-			case checkGegex(commands[i][0], `.*help`):
+			case checkGegex(commands[i][0], `^\s*.?help\s*$`):
 				fmt.Print("Comands:\nprint: Prints current grocery list\n")
-			case checkGegex(commands[i][0], `.*exit`):
+			case checkGegex(commands[i][0], `^\s*.?exit\s*$`):
 				Module = "empty"
+				Checkout()
 				return
-			case checkGegex(commands[i][0], `q`):
+			case checkGegex(commands[i][0], `^\s*.?q\s*$`):
+				Checkout()
 				os.Exit(1)
 			default:
 				fmt.Printf("Command, \"%s\" not found, continuing with next command", commands[i][0])
