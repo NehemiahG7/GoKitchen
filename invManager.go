@@ -25,7 +25,7 @@ type Item struct {
 // String() returns string version of Item
 func (item Item) String() string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "\t%-16sDate added- %-16sAlways add to grocery list: %t", item.Name, item.DateEntered, item.ForceList)
+	fmt.Fprintf(&b, "\t%-16sDate added: %-16sAdd to grocery list: %t", item.Name, item.DateEntered, item.ForceList)
 	return b.String()
 }
 

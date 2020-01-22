@@ -25,14 +25,19 @@ var InvFile string = ""
 //GrocFile is a string containing the name of the file to use in groceryList
 var GrocFile string = ""
 
+//IndexFile is a string containint the name of the file used in itemIndex
+var IndexFile string = ""
+
 //RecFile is a string containing the name of the file to use in cookbook
-var RecFile string = ""
+//var RecFile string = ""
 
 //Configuration is the struct that CONFIGFILE is used to fill
 type Configuration struct {
-	InvFile  string `json:"InvFile"`
-	GrocFile string `json:"GroceryFile"`
-	RecFile  string `json:"RecipesFile"`
+	InvFile   string `json:"InvFile"`
+	GrocFile  string `json:"GroceryFile"`
+	IndexFile string `json:"IndexFile"`
+	//RecFile   string `json:"RecipesFile"`
+
 }
 
 func init() {
@@ -45,12 +50,13 @@ func init() {
 
 	InvFile = config.InvFile
 	GrocFile = config.GrocFile
-	RecFile = config.RecFile
+	IndexFile = config.IndexFile
+	//RecFile = config.RecFile
 
 	Inv = loadInv()
 	Groc = createList(*Inv)
 
-	flag.StringVar(&Module, "module", "empty", "Use this to start the CLI in a specific module. inventory, grocery, or cookbook")
+	flag.StringVar(&Module, "module", "empty", "Use this to start the CLI in a specific module. inventory or grocery")
 	flag.Parse()
 
 }

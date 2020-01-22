@@ -38,7 +38,7 @@ func main() {
 		}
 
 		//Prompt for input
-		fmt.Print("Please enter a module to load (inventory, grocery, cookbook): ")
+		fmt.Print("Please enter a module to load (inventory or grocery): ")
 		fmt.Scanln(&Module)
 	}
 
@@ -46,11 +46,9 @@ func main() {
 func inventoryModule() {
 	for {
 		fmt.Print("Welcome to GoKitchen - Inventory: ")
-		fmt.Scanln(&Module)
-		commands := Parse(Module)
+		commands := Parse(InputString())
 
 		for i := 0; i < len(commands); i++ {
-			Module = commands[i][0]
 			switch {
 			//Add single or multiple items to the Kitchen Inventory
 			case checkGegex(commands[i][0], `^\s*.?add\s*$`):
@@ -62,8 +60,7 @@ func inventoryModule() {
 				}
 				//request items
 				fmt.Println("What would you like to add? \nPlease format enter a catagory(meats,fruits,vegetables,grains,dairy) followed by a coma, \nand then any item you wish seperated by only comas:")
-				fmt.Scanln(&Module)
-				Inv.Add(ParseLine(Module))
+				Inv.Add(ParseLine(InputString()))
 
 			//Reinitilize the entire inventory
 			case checkGegex(commands[i][0], `^\s*.?reInIt\s*$`):
@@ -78,8 +75,8 @@ func inventoryModule() {
 				}
 				//Prompt use for items to remove
 				fmt.Println("What would you like to remove?\nPlease enter all items sperated by only comas: ")
-				fmt.Scanln(&Module)
-				Inv.Remove(ParseLine(Module))
+
+				Inv.Remove(ParseLine(InputString()))
 
 			//Toggle Inv.ForceGrocery to true for specified items
 			case checkGegex(commands[i][0], `^\s*.?addToGrocery\s*$`):
@@ -90,8 +87,8 @@ func inventoryModule() {
 				}
 				//Prompt user for input
 				fmt.Println("What would you like to add to the grocery list(Note: this only adds items that are already in Inventory)")
-				fmt.Scanln(&Module)
-				Inv.AddGrocery(ParseLine(Module))
+
+				Inv.AddGrocery(ParseLine(InputString()))
 
 			//Toggle Inv.ForceGrocery to false
 			case checkGegex(commands[i][0], `^\s*.?removeFromGrocery\s*$`):
@@ -102,8 +99,8 @@ func inventoryModule() {
 				}
 				//Prompt user for input
 				fmt.Println("What would you like to remove fro mthe grocery list?(Note: this only removes items that are already in Inventory)")
-				fmt.Scanln(&Module)
-				Inv.RemoveGrocery(ParseLine(Module))
+
+				Inv.RemoveGrocery(ParseLine(InputString()))
 
 			//Move the given item to a new key
 			case checkGegex(commands[i][0], `^\s*.?changeKey\s*$`):
@@ -112,8 +109,8 @@ func inventoryModule() {
 					continue
 				}
 				fmt.Println("What would you like to edit?(Note: Enter all pairs key first, and seperated only by comas")
-				fmt.Scanln(&Module)
-				Inv.ChangeKey(ParseLine(Module))
+
+				Inv.ChangeKey(ParseLine(InputString()))
 
 			//Print the current kitchen inventory
 			case checkGegex(commands[i][0], `^\s*.?print\s*$`):
@@ -121,7 +118,7 @@ func inventoryModule() {
 
 			//Print list of commands
 			case checkGegex(commands[i][0], `^\s*.?help\s*$`):
-				fmt.Printf("Comands:\nprint: Prints current inventory\n")
+				fmt.Printf("Comands:\n\t-print: Prints current inventory\n")
 
 			//Exit to main screen
 			case checkGegex(commands[i][0], `^\s*.?exit\s*$`):
@@ -145,8 +142,8 @@ func inventoryModule() {
 func groceryModule() {
 	for {
 		fmt.Print("Welcome to GoKitchen - Grocery: ")
-		fmt.Scanln(&Module)
-		commands := Parse(Module)
+
+		commands := Parse(InputString())
 		for i := 0; i < len(commands); i++ {
 			switch {
 			case checkGegex(commands[i][0], `^\s*.?print\s*$`):

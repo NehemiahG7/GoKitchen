@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -8,7 +9,6 @@ import (
 	"log"
 	"os"
 	"regexp"
-	"strings"
 )
 
 func encode(item interface{}, str string) {
@@ -30,20 +30,37 @@ func encode(item interface{}, str string) {
 	}
 }
 
+//InputString gets user from the input and returns it all as a string
+func InputString() string {
+	in := bufio.NewScanner(os.Stdin)
+	in.Scan()
+	return in.Text()
+
+}
+
 //Parse takes a string of user input, and returns [][]string where the first entry of each [] is a command for the app
 func Parse(str string) [][]string {
+	rgx := regexp.MustCompile(`\s*-\s*`)
+	strs := rgx.Split(str, -1)
 	strArry := [][]string{}
-	strs := strings.Split(str, "-")
+
+	fmt.Printf("%s\n", strs)
 
 	for i := 0; i < len(strs); i++ {
-		strArry = append(strArry, strings.Split(strs[i], ","))
+		fmt.Println("In parse")
+		strArry = append(strArry, ParseLine(strs[i]))
 	}
+	fmt.Printf("%s\n", strArry)
 	return strArry
 }
 
 //ParseLine takes a string of user input and returns []string
 func ParseLine(str string) []string {
-	return strings.Split(str, ",")
+	fmt.Printf("parse line %s\n", str)
+	rgx := regexp.MustCompile(`\s*,\s*`)
+
+	return rgx.Split(str, -1)
+	//return strings.Split(str, ",")
 }
 func checkGegex(str, rg string) bool {
 	b, err := regexp.MatchString(rg, str)
