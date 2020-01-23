@@ -55,6 +55,8 @@ Commands:
 		*If an item has not been entered, it will be assigned to the "other" catagory
 		*If an item already exists, its date will be updated
 		ex: addToInv
+	-export: saves the grocery list to groceryList.txt
+		ex: export
 	-index: Loads the Index sub-module
 	-exit: returns to the main menu
 	-q: closes the program`

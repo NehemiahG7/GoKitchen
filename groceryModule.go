@@ -39,6 +39,11 @@ func groceryModule() {
 				Groc.AddToInv()
 				fmt.Println("Inventory updated from grocery list")
 
+			//ExportGrocery
+			case checkGegex(commands[i][0], `^\s*.?export\s*$`):
+				Groc.ExportList()
+				fmt.Println("Grocery list saved to groceryList.txt")
+
 			//Print the grocery list
 			case checkGegex(commands[i][0], `^\s*.?print\s*$`):
 				Groc.Print()

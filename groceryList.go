@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -85,6 +86,19 @@ func (grocery GroceryList) UpdateList() {
 		}
 	}
 	grocery.Add(arry)
+}
+
+//ExportList exports the used grocery list to a text file
+func (grocery GroceryList) ExportList() {
+	list, err := os.Create("groceryList.txt")
+	defer list.Close()
+	if err != nil {
+		log.Fatalf("Error, could not open groceryList.txt, %s", err)
+	}
+	_, err = list.WriteString(grocery.String())
+	if err != nil {
+		log.Fatalf("Error, could not write to groceryList.txt, %s", err)
+	}
 }
 
 func createList(inv Inventory) *GroceryList {
