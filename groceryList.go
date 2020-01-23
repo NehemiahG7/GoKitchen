@@ -80,7 +80,7 @@ func (grocery GroceryList) find(item string) int {
 }
 
 //UpdateList updates the provided grocery list from the global inventory item
-func (grocery GroceryList) UpdateList() {
+func (grocery *GroceryList) UpdateList() {
 	var arry = make([]string, 0)
 	for k := range Inv.Inven {
 		for i := 0; i < len(Inv.Inven[k]); i++ {
@@ -94,7 +94,6 @@ func (grocery GroceryList) UpdateList() {
 	grocery.Add(arry)
 }
 
-<<<<<<< HEAD
 //ExportList exports the used grocery list to a text file
 func (grocery GroceryList) ExportList() {
 	list, err := os.Create("groceryList.txt")
@@ -108,9 +107,6 @@ func (grocery GroceryList) ExportList() {
 	}
 }
 
-=======
-//Create list from given inventory struct
->>>>>>> testing
 func createList(inv Inventory) *GroceryList {
 	var list = make([]string, 0)
 	for k := range inv.Inven {
