@@ -17,6 +17,10 @@ Commands:
 		*Command can only add one catagory per call
 		*Seperate command and catagory with a coma
 		ex: /addCatagory,frozen
+	-removeCatagory: Removes the given catagory from the inventory
+		*Command can only rmove one catagory per call
+		*Caution* this will remove all items in the given catagory
+		*Sperate command and catagory with a coma
 	-remove: Removes the provided items from the inventory
 		*No catagory is needed
 		*Seperate each item with a coma

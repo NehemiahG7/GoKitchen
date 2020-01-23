@@ -29,8 +29,13 @@ func (grocery GroceryList) Print() {
 //The method will check ItemIndex to find a key to add the item at, and will add to
 //'other' if a key is not found
 func (grocery GroceryList) AddToInv() {
+
+	//string builder to report all items added with key "other"
 	var d strings.Builder
 	fmt.Fprintf(&d, "Added: \"")
+
+	//Iterate through grocery list. Checking the Item index for a catagory for each item
+	//Assign "Other" if a key does not exist
 	for i := 0; i < len(grocery.GList); i++ {
 		key, b := Index.CheckItem(grocery.GList[i])
 		if b {
@@ -63,6 +68,7 @@ func (grocery GroceryList) Remove(items []string) {
 	}
 }
 
+//finds an item and returns its index. Returns -1 if item is not in list
 func (grocery GroceryList) find(item string) int {
 	for i := 0; i < len(grocery.GList); i++ {
 		if grocery.GList[i] == item {
@@ -87,6 +93,7 @@ func (grocery GroceryList) UpdateList() {
 	grocery.Add(arry)
 }
 
+//Create list from given inventory struct
 func createList(inv Inventory) *GroceryList {
 	var list = make([]string, 0)
 	for k := range inv.Inven {
@@ -100,6 +107,8 @@ func createList(inv Inventory) *GroceryList {
 	return &grocery
 }
 
+//load list from grocery file and return its pointer
+//call createList if file does not exist
 func loadList() *GroceryList {
 	file, err := os.Open(GrocFile)
 	defer file.Close()

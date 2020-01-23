@@ -14,36 +14,43 @@ func inventoryModule() {
 			switch {
 			//Add single or multiple items to the Kitchen Inventory
 			case checkGegex(commands[i][0], `^\s*.?add\s*$`):
-				//Check if user is going to enter items with command
+				//Make an arry to hold input []string
 				var arry = make([]string, 0)
+				//Check if user is going to enter items with command
 				if checkGegex(commands[i][0], reg) {
 					arry = commands[i][1:]
 				} else {
 					//request items
-					fmt.Println("What would you like to add? \nPlease format enter a catagory(meats,fruits,vegetables,grains,dairy) followed by a coma, \nand then any item you wish seperated by only comas:")
+					fmt.Println("What would you like to add? \nPlease format enter a catagory followed by a coma, \nand then any item you wish seperated by only comas:")
 					arry = ParseLine(InputString())
 				}
+				//Check if the given key is currently a key in Inv
 				_, b := Inv.Inven[arry[0]]
+				//If it is not, prompt user if they'd like to make it
 				if !b {
 					fmt.Printf("Could not find catagory, '%s' would you like to add it(y/n)? ", arry[0])
 					str := InputString()
 				Loop:
 					for {
 						switch str {
+						//if y, add the input
 						case "y":
 							Inv.Add(arry)
 							break Loop
+						//if n, get the correct key
 						case "n":
 							fmt.Printf("What catagory would you like to add it to? ")
 							str2 := InputString()
 							arry[0] = str2
 							Inv.Add(arry)
 							break Loop
+						//make sure to get valid input
 						default:
 							fmt.Printf("Please repeat: (y/n)")
 							str = InputString()
 						}
 					}
+					//add input if valid key was present
 				} else {
 					Inv.Add(arry)
 				}
@@ -56,6 +63,14 @@ func inventoryModule() {
 				fmt.Print("What catagory would you like to add: ")
 				Inv.Add(ParseLine(InputString()))
 
+			//Removes a catagory from the Inventory, including it's []item
+			case checkGegex(commands[i][0], `^\s*.?removeCatagory\s*$`):
+				if checkGegex(commands[i][0], reg) {
+					Inv.RemoveKey(commands[i][1])
+				}
+				fmt.Print("What catagory would you like to remove? (caution, this will remove all items in that catagory): ")
+				arry := ParseLine(InputString())
+				Inv.RemoveKey(arry[0])
 			//Reinitilize the entire inventory
 			case checkGegex(commands[i][0], `^\s*.?reInIt\s*$`):
 				Inv = createInv()
