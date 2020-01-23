@@ -13,7 +13,7 @@ var Module string
 //Inv is pointer to the currently loaded Inventory struct
 var Inv *Inventory
 
-//Groc is the currently loaded inventory struct
+//Groc is the currently loaded grocery struct
 var Groc *GroceryList
 
 //Index is the currently loaded ItemIndex

@@ -46,7 +46,7 @@ func (grocery GroceryList) AddToInv() {
 }
 
 //Add appends an item to the grocery list
-func (grocery GroceryList) Add(items []string) {
+func (grocery *GroceryList) Add(items []string) {
 	for i := 0; i < len(items); i++ {
 		grocery.GList = append(grocery.GList, items[i])
 	}

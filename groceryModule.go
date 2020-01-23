@@ -17,7 +17,6 @@ func groceryModule() {
 				//Check if user is going to enter items with command
 				if checkGegex(commands[i][0], reg) {
 					Groc.Add(commands[i][1:])
-					fmt.Println("In Quick Add")
 					continue
 				}
 				//request items
@@ -29,7 +28,6 @@ func groceryModule() {
 				//Check if user is going to enter items with command
 				if checkGegex(commands[i][0], reg) {
 					Groc.Remove(commands[i][1:])
-					fmt.Println("In Quick remove")
 					continue
 				}
 				//request items
