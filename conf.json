@@ -1,6 +1,6 @@
 {
     "InvFile": "fInv.json",
-    "GroceryFile": "grocery.jsom",
+    "GroceryFile": "grocery.json",
     "RecipesFile": "recipes.json",
     "IndexFile": "index.json"
 }

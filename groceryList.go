@@ -25,6 +25,26 @@ func (grocery GroceryList) Print() {
 	fmt.Printf("\nYour grocery list:\n%s", grocery)
 }
 
+//AddToInv will add all items in the grocery list to the Inventory.
+//The method will check ItemIndex to find a key to add the item at, and will add to
+//'other' if a key is not found
+func (grocery GroceryList) AddToInv() {
+	var d strings.Builder
+	fmt.Fprintf(&d, "Added: \"")
+	for i := 0; i < len(grocery.GList); i++ {
+		key, b := Index.CheckItem(grocery.GList[i])
+		if b {
+			elem := []string{key, grocery.GList[i]}
+			Inv.Add(elem)
+		} else {
+			elem := []string{"other", grocery.GList[i]}
+			Inv.Add(elem)
+			fmt.Fprintf(&d, "%s, ", grocery.GList[i])
+		}
+	}
+	fmt.Fprintf(&d, "\"to 'other'")
+}
+
 //Add appends an item to the grocery list
 func (grocery GroceryList) Add(items []string) {
 	for i := 0; i < len(items); i++ {
@@ -81,6 +101,6 @@ func loadList() *GroceryList {
 	return &grocery
 }
 
-func (grocery *GroceryList) encodeList() {
-	encode(grocery, GrocFile)
-}
+// func (grocery *GroceryList) encodeList() {
+// 	encode(grocery, GrocFile)
+// }

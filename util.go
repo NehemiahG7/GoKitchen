@@ -44,23 +44,17 @@ func Parse(str string) [][]string {
 	strs := rgx.Split(str, -1)
 	strArry := [][]string{}
 
-	fmt.Printf("%s\n", strs)
-
 	for i := 0; i < len(strs); i++ {
-		fmt.Println("In parse")
 		strArry = append(strArry, ParseLine(strs[i]))
 	}
-	fmt.Printf("%s\n", strArry)
 	return strArry
 }
 
 //ParseLine takes a string of user input and returns []string
 func ParseLine(str string) []string {
-	fmt.Printf("parse line %s\n", str)
 	rgx := regexp.MustCompile(`\s*,\s*`)
 
 	return rgx.Split(str, -1)
-	//return strings.Split(str, ",")
 }
 func checkGegex(str, rg string) bool {
 	b, err := regexp.MatchString(rg, str)
@@ -72,6 +66,7 @@ func checkGegex(str, rg string) bool {
 
 //Checkout encodes all currently open structs to their respective files
 func Checkout() {
-	Groc.encodeList()
-	Inv.encodeInv()
+	encode(Inv, InvFile)
+	encode(Groc, GrocFile)
+	encode(Index, IndexFile)
 }

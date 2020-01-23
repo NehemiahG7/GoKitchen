@@ -16,6 +16,9 @@ var Inv *Inventory
 //Groc is the currently loaded inventory struct
 var Groc *GroceryList
 
+//Index is the currently loaded ItemIndex
+var Index *ItemIndex
+
 //CONFIGFILE is a config file
 const CONFIGFILE string = "conf.json"
 
@@ -54,7 +57,8 @@ func init() {
 	//RecFile = config.RecFile
 
 	Inv = loadInv()
-	Groc = createList(*Inv)
+	Groc = loadList()
+	Index = LoadIndex()
 
 	flag.StringVar(&Module, "module", "empty", "Use this to start the CLI in a specific module. inventory or grocery")
 	flag.Parse()

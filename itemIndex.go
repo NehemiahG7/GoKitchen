@@ -15,7 +15,7 @@ type ItemIndex struct {
 func (index ItemIndex) String() string {
 	var b strings.Builder
 	for i := range index.Idx {
-		fmt.Fprintf(&b, "%-10s: %s", i, index.Idx[i])
+		fmt.Fprintf(&b, "%-10s: %s\n", i, index.Idx[i])
 	}
 	return b.String()
 }
@@ -26,8 +26,8 @@ func (index ItemIndex) PrintIndex() {
 }
 
 //AddItem adds an item to the index, or updates it's catagory if the item already exists
-func (index ItemIndex) AddItem(item string, key string) {
-	index.Idx[item] = key
+func (index ItemIndex) AddItem(name string, key string) {
+	index.Idx[name] = key
 }
 
 //RemoveItem will item from the index
@@ -41,9 +41,23 @@ func (index ItemIndex) CheckItem(item string) (string, bool) {
 	return elem, b
 }
 
-//ExportIndex saves the index to a .json file
-func (index ItemIndex) ExportIndex() {
-	encode(index, IndexFile)
+// //ExportIndex saves the index to a .json file
+// func (index ItemIndex) ExportIndex() {
+// 	encode(index, IndexFile)
+// }
+
+func (index ItemIndex) updateIndex() {
+	for k := range Inv.Inven {
+		if k == "other" {
+			continue
+		}
+		for i := 0; i < len(Inv.Inven[k]); i++ {
+			_, b := index.CheckItem(Inv.Inven[k][i].Name)
+			if !b {
+				index.AddItem(Inv.Inven[k][i].Name, k)
+			}
+		}
+	}
 }
 
 //LoadIndex loads an ItemIndex from the file name given in conf.json. If the file does
@@ -60,15 +74,20 @@ func LoadIndex() *ItemIndex {
 
 	index := ItemIndex{}
 	dec.Decode(&index)
-
+	index.updateIndex()
 	return &index
 }
 func createIndex(inv *Inventory) *ItemIndex {
 	index := ItemIndex{}
+	mp := make(map[string]string)
 	for k := range inv.Inven {
+		if k == "other" {
+			continue
+		}
 		for i := 0; i < len(inv.Inven[k]); i++ {
-			index.Idx[inv.Inven[k][i].Name] = k
+			mp[inv.Inven[k][i].Name] = k
 		}
 	}
+	index.Idx = mp
 	return &index
 }

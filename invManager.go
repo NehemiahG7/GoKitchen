@@ -186,9 +186,9 @@ func loadInv() *Inventory {
 }
 
 //EncodeInv prints the struct to a .json file
-func (inv *Inventory) encodeInv() {
-	encode(inv, InvFile)
-}
+// func (inv *Inventory) encodeInv() {
+// 	encode(inv, InvFile)
+// }
 
 // create() creates a new Inventory struct from user input then calls encodeinv() to write it to a .json
 func createInv() *Inventory {
@@ -233,6 +233,6 @@ func createInv() *Inventory {
 		//add group to inventory
 		str.Inven[group] = arry
 	}
-	str.encodeInv()
+	//str.encodeInv()
 	return &str
 }
