@@ -11,6 +11,7 @@ import (
 	"regexp"
 )
 
+//exports given items to the given file name,str
 func encode(item interface{}, str string) {
 
 	file, err := os.Create(str)

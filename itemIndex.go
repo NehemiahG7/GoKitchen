@@ -61,7 +61,7 @@ func (index ItemIndex) updateIndex() {
 }
 
 //LoadIndex loads an ItemIndex from the file name given in conf.json. If the file does
-//not exist, a new ItemIndex is created from Inv
+//not exist, createIndex is called
 func LoadIndex() *ItemIndex {
 	file, err := os.Open(IndexFile)
 	defer file.Close()
@@ -77,6 +77,8 @@ func LoadIndex() *ItemIndex {
 	index.updateIndex()
 	return &index
 }
+
+//create and item index from the given inv
 func createIndex(inv *Inventory) *ItemIndex {
 	index := ItemIndex{}
 	mp := make(map[string]string)

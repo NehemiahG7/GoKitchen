@@ -24,6 +24,7 @@ func indexModule() {
 				fmt.Println("What would you like to add?\nPlease seperate all items with a coma:")
 				arry := ParseLine(InputString())
 				Index.AddItem(arry[0], arry[1])
+
 			//RemoveItem
 			case checkGegex(commands[i][0], `^\s*.?remove\s*$`):
 				//Check if user is going to enter items with command
@@ -36,19 +37,24 @@ func indexModule() {
 				fmt.Println("What would you like to remove?\nPlease seperate all items with a coma:")
 				arry := ParseLine(InputString())
 				Index.RemoveItem(arry[0])
+
 			//PrintIndex
 			case checkGegex(commands[i][0], `^\s*.?print\s*$`):
 				Index.PrintIndex()
+
 			//Help
 			case checkGegex(commands[i][0], `^\s*.?help\s*$`):
 				fmt.Println(IndexHelpString)
+
 			case checkGegex(commands[i][0], `^\s*.?exit\s*$`):
 				Module = "empty"
 				Checkout()
 				return
+
 			case checkGegex(commands[i][0], `^\s*.?q\s*$`):
 				Checkout()
 				os.Exit(1)
+				
 			default:
 				fmt.Printf("Command, \"%s\" not found, continuing with next command", commands[i][0])
 			}

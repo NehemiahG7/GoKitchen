@@ -103,7 +103,7 @@ func (inv Inventory) Add(strs []string) {
 }
 
 //Remove takes the name of an Item and deletes it if it is in the Inventory
-func (inv Inventory) Remove(strs []string) {
+func (inv *Inventory) Remove(strs []string) {
 	for i := 0; i < len(strs); i++ {
 		key, index := inv.find(strs[i])
 		if key == "" {
@@ -111,10 +111,9 @@ func (inv Inventory) Remove(strs []string) {
 		}
 		inv.Inven[key] = append(inv.Inven[key][:index], inv.Inven[key][index+1:]...)
 	}
-	fmt.Printf("removed: %s\n", strs)
 }
 
-//ChangeKey moves an item to a different key value
+//ChangeKey moves an item to a different key value. Array should be structured in pains with the new key before each item.
 func (inv Inventory) ChangeKey(arry []string) {
 	//A slice to hold all items moved for the remove function later
 	names := make([]string, 0)
@@ -136,6 +135,11 @@ func (inv Inventory) ChangeKey(arry []string) {
 		//Add the tempItem to the desired key
 		inv.Inven[edit] = append(inv.Inven[edit], tempItem)
 	}
+}
+
+//RemoveKey removes the given key and its []item from the Inv struct
+func (inv Inventory) RemoveKey(key string) {
+	delete(inv.Inven, key)
 }
 
 // editDate() changes the date of item to the edit

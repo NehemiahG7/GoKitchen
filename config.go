@@ -44,6 +44,7 @@ type Configuration struct {
 }
 
 func init() {
+	//get config file
 	config := Configuration{}
 	c, err := os.Open(CONFIGFILE)
 	if err != nil {
@@ -51,15 +52,18 @@ func init() {
 	}
 	json.NewDecoder(c).Decode(&config)
 
+	//assign file names to global veriables
 	InvFile = config.InvFile
 	GrocFile = config.GrocFile
 	IndexFile = config.IndexFile
 	//RecFile = config.RecFile
 
+	//load global structs
 	Inv = loadInv()
 	Groc = loadList()
 	Index = LoadIndex()
 
+	//flag for user to enter specifc module
 	flag.StringVar(&Module, "module", "empty", "Use this to start the CLI in a specific module. inventory or grocery")
 	flag.Parse()
 
