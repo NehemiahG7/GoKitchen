@@ -15,12 +15,45 @@ func inventoryModule() {
 			//Add single or multiple items to the Kitchen Inventory
 			case checkGegex(commands[i][0], `^\s*.?add\s*$`):
 				//Check if user is going to enter items with command
+				var arry = make([]string, 0)
+				if checkGegex(commands[i][0], reg) {
+					arry = commands[i][1:]
+				} else {
+					//request items
+					fmt.Println("What would you like to add? \nPlease format enter a catagory(meats,fruits,vegetables,grains,dairy) followed by a coma, \nand then any item you wish seperated by only comas:")
+					arry = ParseLine(InputString())
+				}
+				_, b := Inv.Inven[arry[0]]
+				if !b {
+					fmt.Printf("Could not find catagory, '%s' would you like to add it(y/n)? ", arry[0])
+					str := InputString()
+				Loop:
+					for {
+						switch str {
+						case "y":
+							Inv.Add(arry)
+							break Loop
+						case "n":
+							fmt.Printf("What catagory would you like to add it to? ")
+							str2 := InputString()
+							arry[0] = str2
+							Inv.Add(arry)
+							break Loop
+						default:
+							fmt.Printf("Please repeat: (y/n)")
+							str = InputString()
+						}
+					}
+				} else {
+					Inv.Add(arry)
+				}
+
+			//Adds a catagory to the Inventory
+			case checkGegex(commands[i][0], `^\s*.?addCatagory\s*$`):
 				if checkGegex(commands[i][0], reg) {
 					Inv.Add(commands[i][1:])
-					continue
 				}
-				//request items
-				fmt.Println("What would you like to add? \nPlease format enter a catagory(meats,fruits,vegetables,grains,dairy) followed by a coma, \nand then any item you wish seperated by only comas:")
+				fmt.Print("What catagory would you like to add: ")
 				Inv.Add(ParseLine(InputString()))
 
 			//Reinitilize the entire inventory

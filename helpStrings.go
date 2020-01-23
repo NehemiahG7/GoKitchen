@@ -13,6 +13,10 @@ Commands:
 		*Seperate each catagory and item by a coma
 		*If a new catagory is used, it will make a new group in the list
 		ex: /add, meats, chicken, beef
+	-addCatagory: Adds the given catagory to the inventory
+		*Command can only add one catagory per call
+		*Seperate command and catagory with a coma
+		ex: /addCatagory,frozen
 	-remove: Removes the provided items from the inventory
 		*No catagory is needed
 		*Seperate each item with a coma

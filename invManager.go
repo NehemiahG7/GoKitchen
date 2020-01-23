@@ -83,6 +83,10 @@ func (inv Inventory) find(name string) (string, int) {
 func (inv Inventory) Add(strs []string) {
 	date := time.Now().Format("Mon Jan 2")
 	key := strs[0]
+	if len(strs) == 1 {
+		inv.Inven[key] = make([]Item, 0)
+		return
+	}
 
 	for i := 1; i < len(strs); i++ {
 		if inv.check(strs[i]) {

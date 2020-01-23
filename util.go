@@ -69,4 +69,5 @@ func Checkout() {
 	encode(Inv, InvFile)
 	encode(Groc, GrocFile)
 	encode(Index, IndexFile)
+	Groc.UpdateList()
 }

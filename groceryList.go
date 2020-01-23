@@ -72,6 +72,21 @@ func (grocery GroceryList) find(item string) int {
 	return -1
 }
 
+//UpdateList updates the provided grocery list from the global inventory item
+func (grocery GroceryList) UpdateList() {
+	var arry = make([]string, 0)
+	for k := range Inv.Inven {
+		for i := 0; i < len(Inv.Inven[k]); i++ {
+			if Inv.Inven[k][i].ForceList {
+				if grocery.find(Inv.Inven[k][i].Name) != -1 {
+					arry = append(arry, Inv.Inven[k][i].Name)
+				}
+			}
+		}
+	}
+	grocery.Add(arry)
+}
+
 func createList(inv Inventory) *GroceryList {
 	var list = make([]string, 0)
 	for k := range inv.Inven {
