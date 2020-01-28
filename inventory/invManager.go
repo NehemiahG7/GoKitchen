@@ -1,4 +1,4 @@
-package main
+package inventory
 
 import (
 	"bufio"
@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"time"
+
 )
 
 // Inventory is a struct containing a map of Items, using food groups as keys

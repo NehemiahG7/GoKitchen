@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"bufio"
@@ -11,8 +11,8 @@ import (
 	"regexp"
 )
 
-//exports given items to the given file name,str
-func encode(item interface{}, str string) {
+//Encode exports given items to the given file name,str
+func Encode(item interface{}, str string) {
 
 	file, err := os.Create(str)
 	if err != nil {
@@ -57,18 +57,12 @@ func ParseLine(str string) []string {
 
 	return rgx.Split(str, -1)
 }
-func checkGegex(str, rg string) bool {
+
+//CheckGegex takes a string and a regex expression in a the form of a string and returns true if they match, false if they don't
+func CheckGegex(str, rg string) bool {
 	b, err := regexp.MatchString(rg, str)
 	if err != nil {
 		return false
 	}
 	return b
-}
-
-//Checkout encodes all currently open structs to their respective files
-func Checkout() {
-	encode(Inv, InvFile)
-	encode(Groc, GrocFile)
-	encode(Index, IndexFile)
-	Groc.UpdateList()
 }

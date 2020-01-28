@@ -1,4 +1,4 @@
-package main
+package grocery
 
 import (
 	"encoding/json"
@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+
 )
 
 // GroceryList is a struct containing a map which uses a string for key with a slice of strings for content

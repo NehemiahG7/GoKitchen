@@ -1,11 +1,13 @@
-package main
+package inventory
 
 import (
 	"fmt"
 	"os"
+
+	_ "github.com/NehemiahG7/project-0/util"
 )
 
-func inventoryModule() {
+func inventoryModule(Inv Inventory) {
 	for {
 		fmt.Print("Welcome to GoKitchen - Inventory: ")
 		commands := Parse(InputString())
@@ -13,11 +15,11 @@ func inventoryModule() {
 		for i := 0; i < len(commands); i++ {
 			switch {
 			//Add single or multiple items to the Kitchen Inventory
-			case checkGegex(commands[i][0], `^\s*.?add\s*$`):
+			case CheckGegex(commands[i][0], `^\s*.?add\s*$`):
 				//Make an arry to hold input []string
 				var arry = make([]string, 0)
 				//Check if user is going to enter items with command
-				if checkGegex(commands[i][0], reg) {
+				if CheckGegex(commands[i][0], reg) {
 					arry = commands[i][1:]
 				} else {
 					//request items

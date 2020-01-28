@@ -1,76 +1,64 @@
-package main
+package index
 
 import (
 	"fmt"
 	"os"
+
+	_ "github.com/NehemiahG7/project-0/inventory"
+	_ "github.com/NehemiahG7/project-0/util"
 )
 
-func groceryModule() {
+//IndexModule is the command loop for said module
+func IndexModule() {
 	for {
-		fmt.Print("Welcome to GoKitchen - Grocery: ")
+		fmt.Print("Welcome to GoKitchen - Index: ")
 
 		commands := Parse(InputString())
 		for i := 0; i < len(commands); i++ {
 			switch {
-			//Add
+			//AddItem
 			case checkGegex(commands[i][0], `^\s*.?add\s*$`):
 				//Check if user is going to enter items with command
 				if checkGegex(commands[i][0], reg) {
-					Groc.Add(commands[i][1:])
+					Index.AddItem(commands[i][1], commands[i][2])
+					fmt.Println("In Quick Add")
 					continue
 				}
 				//request items
 				fmt.Println("What would you like to add?\nPlease seperate all items with a coma:")
-				Groc.Add(ParseLine(InputString()))
+				arry := ParseLine(InputString())
+				Index.AddItem(arry[0], arry[1])
 
-			//Remove
+			//RemoveItem
 			case checkGegex(commands[i][0], `^\s*.?remove\s*$`):
 				//Check if user is going to enter items with command
 				if checkGegex(commands[i][0], reg) {
-					Groc.Remove(commands[i][1:])
+					Index.RemoveItem(commands[i][1])
+					fmt.Println("In Quick Add")
 					continue
 				}
 				//request items
 				fmt.Println("What would you like to remove?\nPlease seperate all items with a coma:")
-				Groc.Remove(ParseLine(InputString()))
+				arry := ParseLine(InputString())
+				Index.RemoveItem(arry[0])
 
-			//AddToInv
-			case checkGegex(commands[i][0], `^\s*.?addToInv\s*$`):
-				Groc.AddToInv()
-				fmt.Println("Inventory updated from grocery list")
-
-			//ExportGrocery
-			case checkGegex(commands[i][0], `^\s*.?export\s*$`):
-				Groc.ExportList()
-				fmt.Println("Grocery list saved to groceryList.txt")
-
-			//Print the grocery list
+			//PrintIndex
 			case checkGegex(commands[i][0], `^\s*.?print\s*$`):
-				Groc.Print()
+				Index.PrintIndex()
 
-			//help
+			//Help
 			case checkGegex(commands[i][0], `^\s*.?help\s*$`):
-				fmt.Println(GroceryHelpString)
+				fmt.Println(IndexHelpString)
 
-			//move to index sub-module
-			case checkGegex(commands[i][0], `^\s*.?index\s*$`):
-				Module = "index"
-				Checkout()
-				indexModule()
-				return
-
-			//return to main
 			case checkGegex(commands[i][0], `^\s*.?exit\s*$`):
 				Module = "empty"
 				Checkout()
 				return
 
-			//quit program
 			case checkGegex(commands[i][0], `^\s*.?q\s*$`):
 				Checkout()
 				os.Exit(1)
 
-			//invalid command
 			default:
 				fmt.Printf("Command, \"%s\" not found, continuing with next command", commands[i][0])
 			}

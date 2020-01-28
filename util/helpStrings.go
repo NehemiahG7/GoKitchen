@@ -1,4 +1,4 @@
-package main
+package util
 
 //InventoryHelpString is the string used in main.go for the help command in Inventory module
 var InventoryHelpString string = `Help
