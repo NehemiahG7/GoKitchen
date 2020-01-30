@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/NehemiahG7/project-0/inventory"
 )
 
 //ItemIndex is a map containing keys that are all item names ever entered into Inv, matched with the catagory they were entered for
@@ -47,15 +48,15 @@ func (index ItemIndex) CheckItem(item string) (string, bool) {
 // 	encode(index, IndexFile)
 // }
 
-func (index ItemIndex) updateIndex() {
-	for k := range Inv.Inven {
+func (index ItemIndex) updateIndex(inv inventory.Inventory) {
+	for k := range inv.Inven {
 		if k == "other" {
 			continue
 		}
-		for i := 0; i < len(Inv.Inven[k]); i++ {
-			_, b := index.CheckItem(Inv.Inven[k][i].Name)
+		for i := 0; i < len(inv.Inven[k]); i++ {
+			_, b := index.CheckItem(inv.Inven[k][i].Name)
 			if !b {
-				index.AddItem(Inv.Inven[k][i].Name, k)
+				index.AddItem(inv.Inven[k][i].Name, k)
 			}
 		}
 	}
@@ -63,24 +64,24 @@ func (index ItemIndex) updateIndex() {
 
 //LoadIndex loads an ItemIndex from the file name given in conf.json. If the file does
 //not exist, createIndex is called
-func LoadIndex() *ItemIndex {
-	file, err := os.Open(IndexFile)
+func LoadIndex(inv inventory.Inventory, indexFile string) *ItemIndex {
+	file, err := os.Open(indexFile)
 	defer file.Close()
 	if err != nil {
 		//Initialize .json if fInv has not been taken before
-		return createIndex(Inv)
+		return createIndex(inv)
 	}
 
 	dec := json.NewDecoder(file)
 
 	index := ItemIndex{}
 	dec.Decode(&index)
-	index.updateIndex()
+	index.updateIndex(inv)
 	return &index
 }
 
 //create and item index from the given inv
-func createIndex(inv *Inventory) *ItemIndex {
+func createIndex(inv inventory.Inventory) *ItemIndex {
 	index := ItemIndex{}
 	mp := make(map[string]string)
 	for k := range inv.Inven {

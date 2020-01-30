@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-
+	"github.com/NehemiahG7/project-0/index"
+	"github.com/NehemiahG7/project-0/inventory"
 )
 
 // GroceryList is a struct containing a map which uses a string for key with a slice of strings for content
@@ -31,7 +32,7 @@ func (grocery GroceryList) Print() {
 //AddToInv will add all items in the grocery list to the Inventory.
 //The method will check ItemIndex to find a key to add the item at, and will add to
 //'other' if a key is not found
-func (grocery GroceryList) AddToInv() {
+func (grocery GroceryList) AddToInv(inv inventory.Inventory, idx index.ItemIndex) {
 
 	//string builder to report all items added with key "other"
 	var d strings.Builder
@@ -40,13 +41,13 @@ func (grocery GroceryList) AddToInv() {
 	//Iterate through grocery list. Checking the Item index for a catagory for each item
 	//Assign "Other" if a key does not exist
 	for i := 0; i < len(grocery.GList); i++ {
-		key, b := Index.CheckItem(grocery.GList[i])
+		key, b := idx.CheckItem(grocery.GList[i])
 		if b {
 			elem := []string{key, grocery.GList[i]}
-			Inv.Add(elem)
+			inv.Add(elem)
 		} else {
 			elem := []string{"other", grocery.GList[i]}
-			Inv.Add(elem)
+			inv.Add(elem)
 			fmt.Fprintf(&d, "%s, ", grocery.GList[i])
 		}
 	}
@@ -82,13 +83,13 @@ func (grocery GroceryList) find(item string) int {
 }
 
 //UpdateList updates the provided grocery list from the global inventory item
-func (grocery *GroceryList) UpdateList() {
+func (grocery *GroceryList) UpdateList(inv inventory.Inventory) {
 	var arry = make([]string, 0)
-	for k := range Inv.Inven {
-		for i := 0; i < len(Inv.Inven[k]); i++ {
-			if Inv.Inven[k][i].ForceList {
-				if grocery.find(Inv.Inven[k][i].Name) != -1 {
-					arry = append(arry, Inv.Inven[k][i].Name)
+	for k := range inv.Inven {
+		for i := 0; i < len(inv.Inven[k]); i++ {
+			if inv.Inven[k][i].ForceList {
+				if grocery.find(inv.Inven[k][i].Name) != -1 {
+					arry = append(arry, inv.Inven[k][i].Name)
 				}
 			}
 		}
@@ -109,7 +110,7 @@ func (grocery GroceryList) ExportList() {
 	}
 }
 
-func createList(inv Inventory) *GroceryList {
+func createList(inv inventory.Inventory) *GroceryList {
 	var list = make([]string, 0)
 	for k := range inv.Inven {
 		for i := 0; i < len(inv.Inven[k]); i++ {
@@ -122,15 +123,15 @@ func createList(inv Inventory) *GroceryList {
 	return &grocery
 }
 
-//load list from grocery file and return its pointer
+//LoadList from grocery file and return its pointer
 //call createList if file does not exist
-func loadList() *GroceryList {
-	file, err := os.Open(GrocFile)
+func LoadList(inv inventory.Inventory, grocFile string) *GroceryList {
+	file, err := os.Open(grocFile)
 	defer file.Close()
 
 	if err != nil {
 		//Initialize .json if fInv has not been taken before
-		return createList(*Inv)
+		return createList(inv)
 	}
 	dec := json.NewDecoder(file)
 

@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
 )
 
 // Inventory is a struct containing a map of Items, using food groups as keys
@@ -132,7 +131,7 @@ func (inv Inventory) ChangeKey(arry []string) {
 		names = append(names, name)
 		//Assign the item names refers to to a temperary variable
 		tempItem := inv.Inven[key][index]
-		Inv.Remove(names)
+		inv.Remove(names)
 		//Add the tempItem to the desired key
 		inv.Inven[edit] = append(inv.Inven[edit], tempItem)
 	}
@@ -178,8 +177,8 @@ func (inv Inventory) RemoveGrocery(strs []string) {
 	}
 }
 
-// load() loads an Inventory struct from the given .json file
-func loadInv() *Inventory {
+//LoadInv loads an Inventory struct from the given .json file
+func LoadInv(InvFile string) *Inventory {
 	file, err := os.Open(InvFile)
 	if err != nil {
 		//Initialize .json if fInv has not been taken before

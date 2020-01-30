@@ -1,6 +1,12 @@
 package util
 
-//InventoryHelpString is the string used in main.go for the help command in Inventory module
+//MenuHelpString is the string used in main.go for help in the command module
+var MenuHelpString string = `Commands:
+	-inventory: loads the inventory module
+	-grocery: loads the grocery module
+	-q: exits the program"`
+
+//InventoryHelpString is the string used in InventoryModule.go for the help command in Inventory module
 var InventoryHelpString string = `Help
 -Putting a "/" in front of any input command allows for input to be issued with the command
 -If a "/" is not provided, there is will be a prompt for input
