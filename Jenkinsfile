@@ -11,14 +11,14 @@
 pipeline {
 	agent any
     tools {
-        go 'go'
+        go 'Go'
     }
 	stages {
 		stage('Checkout') {
 			checkout scm
 		}
 		stage('Build') {
-			steps {
+			step {
 				sh go build *.go
 			}
 		}
