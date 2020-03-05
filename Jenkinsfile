@@ -15,10 +15,12 @@ pipeline {
     }
 	stages {
 		stage('Checkout') {
-			checkout scm
+            steps{
+			    checkout scm
+            }
 		}
 		stage('Build') {
-			step {
+			steps {
 				sh go build *.go
 			}
 		}
