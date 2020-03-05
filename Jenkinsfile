@@ -30,8 +30,10 @@ pipeline {
 	}
 	post {
 		always {
-			sh 'cd ../..'
-			deleteDir
+			steps{
+				sh 'cd ../..'
+				deleteDir
+			}
 		}
 	}
 }
