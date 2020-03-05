@@ -59,7 +59,7 @@ func GroceryModule(inv inventory.Inventory, groc GroceryList, idx index.ItemInde
 
 			//move to index sub-module
 			case util.CheckGegex(commands[i][0], `^\s*.?index\s*$`):
-				index.IndexModule(idx, inv)
+				//index.IndexModule(idx, inv)
 				return ""
 
 			//return to main

@@ -16,6 +16,9 @@ pipeline {
 	stages {
 		stage('Checkout') {
             steps{
+				sh 'mkdir github.com'
+				sh 'mkdir NehemiahG7'
+				sh 'cd github.com/NehemiahG7'
 			    checkout scm
             }
 		}
