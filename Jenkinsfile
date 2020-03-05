@@ -28,4 +28,10 @@ pipeline {
 			}
 		}
 	}
+	post {
+		always {
+			sh 'cd ../..'
+			deleteDir
+		}
+	}
 }
