@@ -21,7 +21,7 @@ pipeline {
 		}
 		stage('Build') {
 			steps {
-				sh go build *.go
+				sh 'go build *.go'
 			}
 		}
 	}
