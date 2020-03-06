@@ -22,6 +22,7 @@ pipeline {
 			    checkout scm
 				sh 'pwd'
 				sh 'ls'
+				sh 'echo $GOPATH'
             }
 		}
 		stage('Build') {
