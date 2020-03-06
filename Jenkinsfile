@@ -20,6 +20,8 @@ pipeline {
 				sh 'mkdir github.com/NehemiahG7'
 				sh 'cd github.com/NehemiahG7'
 			    checkout scm
+				sh 'pwd'
+				sh 'ls'
             }
 		}
 		stage('Build') {
