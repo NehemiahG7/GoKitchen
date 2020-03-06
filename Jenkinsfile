@@ -18,6 +18,7 @@ pipeline {
             steps {
 				sh 'export GOPATH=$WORKSPACE/..'
 				sh 'export PATH=$GOPATH:$PATH'
+				sh 'exec bash'
 				sh 'mkdir -p github.com/NehemiahG7'
 				sh 'cd github.com/NehemiahG7'
 			    checkout scm
