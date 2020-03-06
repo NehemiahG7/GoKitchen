@@ -9,21 +9,26 @@
 //     }
 // }
 pipeline {
-	agent any
+	agent {
+		node {
+			label 'mylabel'
+			customworkspace '${GOPATH}/github.com/NehemiahG7'
+		}
+	}
     tools {
         go 'Go'
     }
 	stages {
-		stage('Checkout') {
+		stage('setup') {
             steps {
-				sh 'sudo ln -sf ${WORKSPACE} ${GOPATH}'
-				sh 'exec bash'
-				sh 'mkdir -p github.com/NehemiahG7'
 			    checkout scm
 				sh 'pwd'
 				sh 'ls'
 				sh 'go env | grep GOPATH'
             }
+		}
+		stage('Checkout'){
+
 		}
 		stage('Build') {
 			steps {
