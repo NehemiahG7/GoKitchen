@@ -16,8 +16,9 @@ pipeline {
 	stages {
 		stage('Checkout') {
             steps {
-				sh 'mkdir github.com'
-				sh 'mkdir github.com/NehemiahG7'
+				sh 'export GOPATH=$WORKSPACE/..'
+				sh 'export PATH=$GOPATH:$PATH'
+				sh 'mkdir -p github.com/NehemiahG7'
 				sh 'cd github.com/NehemiahG7'
 			    checkout scm
 				sh 'pwd'
