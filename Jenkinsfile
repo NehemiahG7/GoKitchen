@@ -15,7 +15,7 @@ pipeline {
     }
 	stages {
 		stage('Checkout') {
-            steps{
+            steps {
 				sh 'mkdir github.com'
 				sh 'mkdir github.com/NehemiahG7'
 				sh 'cd github.com/NehemiahG7'
@@ -30,10 +30,8 @@ pipeline {
 	}
 	post {
 		always {
-			steps{
 				sh 'cd ../..'
-				deleteDir
-			}
+				deleteDir()
 		}
 	}
 }
