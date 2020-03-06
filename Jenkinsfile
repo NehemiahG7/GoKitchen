@@ -29,14 +29,13 @@ pipeline {
 		}
 		stage('Build') {
 			steps {
-				sh 'ls'
+				sh 'pwd'
 				sh 'go build *.go'
 			}
 		}
 	}
 	post {
 		always {
-				sh 'cd ../..'
 				deleteDir()
 		}
 	}
