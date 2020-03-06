@@ -16,8 +16,7 @@ pipeline {
 	stages {
 		stage('Checkout') {
             steps {
-				sh 'export GOPATH=$WORKSPACE/..'
-				sh 'export PATH=$GOPATH:$PATH'
+				sh 'ln -sf ${WORKSPACE} ${GOPATH}/src/my_repo'
 				sh 'exec bash'
 				sh 'mkdir -p github.com/NehemiahG7'
 				sh 'cd github.com/NehemiahG7'
