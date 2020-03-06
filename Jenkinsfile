@@ -11,7 +11,7 @@
 pipeline {
 	agent {
 		node {
-			label 'mylabel'
+			label 'my-defined-label'
 			customWorkspace '${GOPATH}/github.com/NehemiahG7'
 		}
 	}
