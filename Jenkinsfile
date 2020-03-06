@@ -10,8 +10,8 @@
 // }
 pipeline {
 	agent {
-		node('my-agent') {
-			//label 'my-defined-label'
+		node {
+			label 'my-defined-label'
 			customWorkspace '${GOPATH}/github.com/NehemiahG7'
 		}
 	}
