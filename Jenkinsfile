@@ -22,7 +22,7 @@ pipeline {
 			    checkout scm
 				sh 'pwd'
 				sh 'ls'
-				sh 'echo $GOPATH'
+				sh 'go env | grep GOPATH'
             }
 		}
 		stage('Build') {
