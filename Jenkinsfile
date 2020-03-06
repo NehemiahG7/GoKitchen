@@ -12,7 +12,7 @@ pipeline {
 	agent {
 		node {
 			label 'my-defined-label'
-			customWorkspace '/var/jenkins_home/go/github.com/NehemiahG7'
+			customWorkspace '/var/jenkins_home/go/src/github.com/NehemiahG7'
 		}
 	}
     tools {
@@ -29,6 +29,7 @@ pipeline {
 		}
 		stage('Build') {
 			steps {
+				sh 'ls'
 				sh 'go build *.go'
 			}
 		}
