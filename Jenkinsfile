@@ -16,7 +16,7 @@ pipeline {
 	stages {
 		stage('Checkout') {
             steps {
-				sh 'ln -sf ${WORKSPACE} ${GOPATH}'
+				sh 'sudo ln -sf ${WORKSPACE} ${GOPATH}'
 				sh 'exec bash'
 				sh 'mkdir -p github.com/NehemiahG7'
 			    checkout scm
