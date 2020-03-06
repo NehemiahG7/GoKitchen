@@ -27,9 +27,6 @@ pipeline {
 				sh 'go env | grep GOPATH'
             }
 		}
-		stage('Checkout'){
-
-		}
 		stage('Build') {
 			steps {
 				sh 'go build *.go'
