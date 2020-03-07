@@ -35,7 +35,7 @@ pipeline {
 		}
 		stage('Test'){
 			steps {
-				sh 'go test *.go'
+				sh 'go test inventory/*.go'
 			}
 		}
 	}
