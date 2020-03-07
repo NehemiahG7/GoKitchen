@@ -33,6 +33,11 @@ pipeline {
 				sh 'go build *.go'
 			}
 		}
+		stage('Test'){
+			steps {
+				sh 'go test *.go'
+			}
+		}
 	}
 	post {
 		always {

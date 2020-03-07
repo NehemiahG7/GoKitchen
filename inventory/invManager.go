@@ -47,7 +47,7 @@ func (inv Inventory) printInv() {
 	fmt.Print(inv)
 }
 
-// check() takes the name of an item and returns true if it is in Inventory, and false if not
+//Check takes the name of an item and returns true if it is in Inventory, and false if not
 func (inv Inventory) check(item string) bool {
 	contains := false
 	for k := range inv.Inven {
