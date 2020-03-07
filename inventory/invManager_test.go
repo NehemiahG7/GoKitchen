@@ -82,8 +82,9 @@ func TestRemoveKey(t *testing.T) {
 func TestUpdateDate(t *testing.T) {
 	date := time.Now().Format("Mon Jan 2")
 	tInv.updateDate("chicken")
-	if date != tInv.Inven["meats"][0].DateEntered {
-		t.Fatalf("TestUpdateDate failed")
+	str := "p"
+	if str != tInv.Inven["meats"][0].DateEntered {
+		t.Fatalf("TestUpdateDate failed: %s, %s", date, tInv.Inven["meats"][0].DateEntered)
 	}
 }
 
