@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/NehemiahG7/project-0/index"
-	"github.com/NehemiahG7/project-0/inventory"
+	"github.com/NehemiahG7/GoKitchen/index"
+	"github.com/NehemiahG7/GoKitchen/inventory"
 )
 
 // GroceryList is a struct containing a map which uses a string for key with a slice of strings for content

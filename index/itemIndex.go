@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/NehemiahG7/project-0/inventory"
+	"github.com/NehemiahG7/GoKitchen/inventory"
 )
 
 //ItemIndex is a map containing keys that are all item names ever entered into Inv, matched with the catagory they were entered for

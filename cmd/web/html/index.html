@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GoKitchen</title>
+        <link rel="stylesheet" type="text/css" href="static/index.css"/>
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="header">
+                <div id="title">
+                    <h1>Welcome to GoKitchen: {{.Name}}</h1>
+                </div>
+                <div id="navagation">
+                    <tr>
+                        <th><a href="#" class="nav">inventory</a></th>
+                        <th><a href="#" class="nav">Grocery</a></th>
+                        <th><a href="#" class="nav">Cookbook</a></th>
+                    </tr>
+                </div>
+            </div>
+            <div id="content">
+                <div id="controls">
+                    <!--Form to add item-->
+                    <div id="addItem">
+                        <form>
+                            <label for="item">Item Name:</label>
+                            <input type="text" id="item" name="item"><br>
+                            <lable for="cat">Catagory:</lable>
+                            <select id="cat" name="cat">
+                                {{range $key, $value := .Inv.Inven}}
+                                <option value= {{$key}}>{{$key}}</option>
+                                {{end}}
+                            </select>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                    <!--Form to add catagory-->
+                    <div id="addCat">
+                        <form>
+                            <label for="addCat">Catagory Name</label>
+                            <input type="text" id="addCat" name="addCat">
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
+                <!--Item table test-->
+                <div id="invList">
+                    <ul>
+                        {{range $key, $value := .Inv.Inven}}
+                            <li>
+                                <label for={{$key}} class="lbl-toggle" type="checkbox">{{$key}}</label>
+                                <input type="checkbox" id={{$key}} class="toggle">
+                                <div class="collapsible-content">
+                                    <ul> 
+                                        {{range $int, $val := $value}}
+                                        <li>
+                                            {{$val.Name}}
+                                        </li>
+                                        {{end}}
+                                    </ul>
+                                </div>
+                            </li>
+                        {{end}}
+                    </ul>
+                </div>
+                <!--Item table
+                <div id="invList">
+                    <ul>
+                        {{range $key, $value := .Inv.Inven}}
+                            <li>
+                                <button type="button" class="collapsible">{{$key}}</button>
+                                <ul class="content">
+                                    {{range $int, $val := $value}}
+                                    <li>
+                                        {{$val.Name}}
+                                    </li>
+                                    {{end}}
+                                </ul>
+                            </li>
+                        {{end}}
+                    </ul>
+                </div>-->
+
+            </div>
+            <div id="footer">
+                <p>Nehemiah Campbell</p>
+            </div>
+        </div>
+    </body>
+</html>

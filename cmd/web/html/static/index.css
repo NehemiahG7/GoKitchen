@@ -1,0 +1,105 @@
+*{
+    font-family: Impact, 'Charcoal', 'sains-serif';
+}
+h1 {
+    margin: 0;
+}
+body {
+    background-color:#EEE;
+}
+#container{
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+}
+#header {
+    background-color: bisque;
+    text-align: center;
+    padding: 10px;
+}
+#title {
+    padding: 10px;
+    font-size: 16px;
+}
+.nav {
+    padding: 0px 40px;
+    font-size: 16px;
+}
+#content{
+    padding: 10px;
+
+}
+#controls {
+    float: left;
+    width: 300px;
+}
+#addItem {
+    border: 1px solid black;
+    padding: 5px;
+
+}
+#addCat {
+    border: 1px solid black;
+    padding: 5px;
+
+}
+#invList {
+    float: right;
+    height: 460px;
+    width: 320px;
+    padding: 10px;
+    border: 1px solid black;
+}
+#invList ul {
+    list-style: none;
+    padding: 0;
+}
+#invList ul li {
+    background-color: #ccffff;
+}
+.toggle {
+    display: none;
+}
+
+.lbl-toggle {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    /*TODO-insert styling for catagories*/
+}
+.lbl-toggle:hover{
+    color: #7C5A0B;
+}
+.lbl-toggle::before {
+    content: ' ';
+    display: inline-block;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid currentColor;
+
+    vertical-align: middle;
+    margin-right: .7rem;
+    transform: translateY(-2px);
+
+    transition: transform .2s ease-out;
+}
+.collapsible-content {
+    max-height: 0px;
+    overflow: hidden;
+}
+.toggle:checked + .lbl-toggle + .collapsible-content {
+    max-height: 100px;
+}
+#invList ul li ul li {
+    background-color: white;
+}
+#footer{
+    clear: both;
+    text-align: right;
+    background-color: bisque;
+    padding: 10px;
+
+}

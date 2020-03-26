@@ -3,7 +3,7 @@ package inventory
 import (
 	"fmt"
 
-	"github.com/NehemiahG7/project-0/util"
+	"github.com/NehemiahG7/GoKitchen/util"
 )
 
 var reg string = `/.*`

@@ -3,9 +3,9 @@ package grocery
 import (
 	"fmt"
 
-	"github.com/NehemiahG7/project-0/index"
-	"github.com/NehemiahG7/project-0/inventory"
-	"github.com/NehemiahG7/project-0/util"
+	"github.com/NehemiahG7/GoKitchen/index"
+	"github.com/NehemiahG7/GoKitchen/inventory"
+	"github.com/NehemiahG7/GoKitchen/util"
 )
 
 var reg string = `/.*`
