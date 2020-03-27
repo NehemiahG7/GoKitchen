@@ -11,7 +11,7 @@ import (
 )
 
 var nm string = "salty"
-var reg string = `^\/\?.*$`
+var reg string = `^.*\?.*$`
 
 type account struct{
 	Name string
@@ -20,8 +20,8 @@ type account struct{
 
 func main(){
 
-	http.HandleFunc("/log", login)
-	http.HandleFunc("/", inv)
+	http.HandleFunc("/", login)
+	http.HandleFunc("/inv", inv)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("html/static/"))))
 
@@ -32,7 +32,15 @@ func main(){
 }
 
 func login(w http.ResponseWriter, r *http.Request){
-
+	acc := account{
+		Name: "stuff",
+	}
+	if r.Method=="GET"{
+		servHTML(w, "html/login.html", acc)
+	}
+	if r.Method=="POST"{
+		http.Redirect(w, r, "http://localhost:8080/inv", http.StatusSeeOther)
+	}
 }
 
 func inv(w http.ResponseWriter, r *http.Request){
@@ -48,24 +56,27 @@ func inv(w http.ResponseWriter, r *http.Request){
 		fmt.Printf("Processing form response\n")
 	}
 
+	servHTML(w, "html/index.html", acc)
+}
+
+func servHTML(w http.ResponseWriter, file string, stuc interface{}){
 	//Parse html template to serve
-	landing, err := template.ParseFiles("html/index.html")
+	landing, err := template.ParseFiles(file)
 	if err != nil{
 		log.Print(err)
 	}
 	
 	//serve html template and acc struct
-	err = landing.Execute(w, acc)
+	err = landing.Execute(w, stuc)
 	if err != nil{
 		log.Print(err)
 	}
-
 }
 
 func formResp(str string, acc account){
 
 	//Trim prefix from str and split into an arry containing the input
-	str = strings.TrimPrefix(str, "/?")
+	str = strings.TrimPrefix(str, "/inv?")
 	arry := strings.Split(str, "=")
 
 	//Determine which request was made and exicute
