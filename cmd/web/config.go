@@ -5,10 +5,12 @@ import (
 	"flag"
 	"log"
 	"os"
+	"database/sql"
+	_"github.com/lib/pq"
 
-	"github.com/NehemiahG7/GoKitchen/grocery"
-	"github.com/NehemiahG7/GoKitchen/index"
-	"github.com/NehemiahG7/GoKitchen/inventory"
+	"github.com/NehemiahG7/GoKitchen/internal/grocery"
+	"github.com/NehemiahG7/GoKitchen/internal/index"
+	"github.com/NehemiahG7/GoKitchen/internal/inventory"
 )
 
 //Module is the command string for main.go
@@ -64,7 +66,6 @@ func init() {
 	//flag for user to enter specifc module
 	flag.StringVar(&Module, "module", "menu", "Use this to start the CLI in a specific module. inventory or grocery")
 	flag.Parse()
-
 }
 
 // func openFile(str string) *os.File {

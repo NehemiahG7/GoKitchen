@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"github.com/NehemiahG7/GoKitchen/inventory"
+	"github.com/NehemiahG7/GoKitchen/internal/inventory"
 	"github.com/NehemiahG7/GoKitchen/util"
 )
 
@@ -103,12 +103,4 @@ func formResp(str string, acc account){
 	}
 
 	util.Encode(acc.Inv, InvFile)
-}
-
-func startTCP(content string, address string, cha chan string){
-	// con, err := net.Dial("TCP", address)
-	// if err != nil {
-	// 	fmt.Printf("Dial err: %s\n", err)
-	// }
-	//con.Write(content)
 }
