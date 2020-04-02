@@ -10,7 +10,7 @@ import (
 	"github.com/NehemiahG7/GoKitchen/util"
 )
 
-var nm string = "salty"
+var nm string = "Everyone"
 var reg string = `^.*\?.*$`
 
 type account struct{
@@ -35,12 +35,12 @@ func login(w http.ResponseWriter, r *http.Request){
 	acc := account{
 		Name: "stuff",
 	}
-	if r.Method=="GET"{
-		servHTML(w, "html/login.html", acc)
-	}
-	if r.Method=="POST"{
+	if r.Method == "POST"{
+		fmt.Printf("%s\n", r.PostFormValue("account"))
 		http.Redirect(w, r, "http://localhost:8080/inv", http.StatusSeeOther)
 	}
+	servHTML(w, "html/login.html", acc)
+
 }
 
 func inv(w http.ResponseWriter, r *http.Request){
@@ -103,4 +103,12 @@ func formResp(str string, acc account){
 	}
 
 	util.Encode(acc.Inv, InvFile)
+}
+
+func startTCP(content string, address string, cha chan string){
+	// con, err := net.Dial("TCP", address)
+	// if err != nil {
+	// 	fmt.Printf("Dial err: %s\n", err)
+	// }
+	//con.Write(content)
 }
