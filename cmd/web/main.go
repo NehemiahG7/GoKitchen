@@ -1,19 +1,20 @@
 package main
 
 import (
-	"strings"
+	"net/url"
 	"fmt"
 	"html/template"
 	"log"
+	"strconv"
 	"net/http"
 	"github.com/NehemiahG7/GoKitchen/internal/inventory"
-	"github.com/NehemiahG7/GoKitchen/util"
+	"github.com/NehemiahG7/GoKitchen/internal/account"
 )
 
-var nm string = "Everyone"
 var reg string = `^.*\?.*$`
 
-type account struct{
+type accStruc struct{
+	ID int
 	Name string
 	Inv inventory.Inventory
 }
@@ -32,28 +33,66 @@ func main(){
 }
 
 func login(w http.ResponseWriter, r *http.Request){
-	acc := account{
-		Name: "stuff",
-	}
-	if r.Method == "POST"{
-		fmt.Printf("%s\n", r.PostFormValue("account"))
+
+	_ , err := r.Cookie("id")
+	if err == nil{
 		http.Redirect(w, r, "http://localhost:8080/inv", http.StatusSeeOther)
+		return
 	}
+
+	if r.Method == "POST"{
+		id := account.Login(r.PostFormValue("account"), r.PostFormValue("password"))
+		if id != 0 {
+			cookie := http.Cookie{
+				Name: "id",
+				Value: strconv.Itoa(id),
+			}
+			http.SetCookie(w, &cookie)
+			http.Redirect(w, r, "http://localhost:8080/inv", http.StatusSeeOther)
+			return
+		} 
+		if id == 0 {
+			id = account.CreateAccount(r.PostFormValue("account"), r.PostFormValue("password"))
+			cookie := http.Cookie{
+				Name: "id",
+				Value: strconv.Itoa(id),
+			}
+			http.SetCookie(w, &cookie)
+			http.Redirect(w, r, "http://localhost:8080/inv", http.StatusSeeOther)
+			return
+		}
+	}
+	acc := accStruc{}
 	servHTML(w, "html/login.html", acc)
 
 }
 
 func inv(w http.ResponseWriter, r *http.Request){
 
-	acc := account{
-		Name: nm,
-		Inv: *inventory.LoadInv(InvFile),
+	//If user doesn't have the id cookie, redirect them to login
+	//Otherwise, get cooke and convert to useable type
+	cookie, err := r.Cookie("id")
+	if err != nil{
+		fmt.Printf("invHandler: redirecting user to login, %s\n", err)
+		http.Redirect(w, r, "http://localhost:8080/", http.StatusSeeOther)
+		return
+	}
+	id, err := strconv.Atoi(cookie.Value)
+	if err != nil{
+		fmt.Printf("invHandler: error parsing value, %s\n", err)
 	}
 
-	//if get request contains /?, process form request
-	if util.CheckGegex(r.RequestURI, reg){
-		formResp(r.RequestURI, acc)
-		fmt.Printf("Processing form response\n")
+	//Get account info
+	acc := accStruc{
+		ID: id,
+		Name: account.GetUsername(id),
+		Inv: account.GetInv(id),
+		//Inv: *inventory.LoadInv(InvFile),
+	}
+
+	query := r.URL.RawQuery
+	if query != ""{
+		formResp(query, acc)
 	}
 
 	servHTML(w, "html/index.html", acc)
@@ -73,34 +112,19 @@ func servHTML(w http.ResponseWriter, file string, stuc interface{}){
 	}
 }
 
-func formResp(str string, acc account){
-
-	//Trim prefix from str and split into an arry containing the input
-	str = strings.TrimPrefix(str, "/inv?")
-	arry := strings.Split(str, "=")
-
-	//Determine which request was made and exicute
-	if arry[0] == "item"{
-
-		arry[1] = strings.TrimSuffix(arry[1], "&cat")
-		arry = arry[1:3]
-		temp:=arry[1]
-		arry[1] = arry[0]
-		arry[0] = temp
-
-		if arry[1] == ""{
-			return
-		}
-		acc.Inv.Add(arry)
-
-		fmt.Printf("1st entry %s, 2nd entry %s\n", arry[0], arry[1])
-	} else if arry[0] == "addCat"{
-		arry = arry[1:]
-		if arry[0] == ""{
-			return
-		}
-		acc.Inv.Add(arry)
+func formResp(query string, acc accStruc){
+	values, err := url.ParseQuery(query)
+	if err != nil{
+		fmt.Printf("formResp: error parsing query: %s\n", err)
 	}
-
-	util.Encode(acc.Inv, InvFile)
+	cat, ok := values["addCat"]
+	if ok {
+		account.AddCatagory(cat[0], acc.Inv, acc.ID)
+		return
+	}
+	item, ok := values["item"]
+	if ok {
+		cat, _ := values["cat"]
+		account.AddItem(item[0],cat[0], acc.Inv, acc.ID)
+	}
 }

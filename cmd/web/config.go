@@ -5,8 +5,6 @@ import (
 	"flag"
 	"log"
 	"os"
-	"database/sql"
-	_"github.com/lib/pq"
 
 	"github.com/NehemiahG7/GoKitchen/internal/grocery"
 	"github.com/NehemiahG7/GoKitchen/internal/index"
